@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../command.dart';
@@ -24,7 +26,7 @@ final catgirl = ExtendedChatCommand(
     final imageUrl = Uri.parse(
         'https://nekos.moe/image/${jsonDecode(response.body)['images'][0]['id']}');
     final embed = EmbedBuilder()
-      ..color = DiscordColor.parseHexString("000000")
+      ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
     await message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
   },

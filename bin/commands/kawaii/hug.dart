@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../command.dart';
@@ -45,7 +47,7 @@ final hug = ExtendedChatCommand(
 
     final embed = EmbedBuilder()
       ..description = desc
-      ..color = DiscordColor.parseHexString("000000")
+      ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
 
     await context.respond(MessageBuilder(embeds: [embed]));
