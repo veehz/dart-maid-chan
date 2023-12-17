@@ -10,13 +10,12 @@ final catgirl = ExtendedChatCommand(
   (ChatContext context) async {
     final rawUrl =
         'https://nekos.moe/api/v1/random/image?count=1&nsfw=${context.isNsfw ? 'true' : 'false'}';
-    // Fetch from: 'https://nekos.moe/api/v1/random/image?count=1'
     final url = Uri.parse(rawUrl);
     // send a message first to let the user know we're working on it
     var message = await context.respond(MessageBuilder(
         content: 'Fetching catgirl...', replyId: context.message.id));
     final response = await http.get(url, headers: {
-      'User-Agent': 'maid-chan/0.0.1',
+      'User-Agent': 'maid-chan/0.1.0',
     });
     if (response.statusCode != 200) {
       await message
