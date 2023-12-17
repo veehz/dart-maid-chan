@@ -26,7 +26,7 @@ final catgirl = ExtendedChatCommand(
     final imageUrl = Uri.parse(
         'https://nekos.moe/image/${jsonDecode(response.body)['images'][0]['id']}');
     final embed = EmbedBuilder()
-      ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
+      ..color = DiscordColor.parseHexString(Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
     await message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
   },

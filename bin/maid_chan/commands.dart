@@ -43,13 +43,13 @@ void initCommands(CommandsPlugin commandsPlugin) {
           embeds.add(EmbedBuilder()
             ..title = cmd.name
             ..description = cmd.description
-            ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
+            ..color = DiscordColor.parseHexString(Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
             ..timestamp = DateTime.now().toUtc()
             ..fields = [
               if (cmd.usage != null)
                 EmbedFieldBuilder(
                     name: "Usage",
-                    value: Platform.environment['PREFIX']! + cmd.usage!,
+                    value: Platform.environment['MAID_CHAN_PREFIX']! + cmd.usage!,
                     isInline: false),
               if (cmd.aliases.isNotEmpty)
                 EmbedFieldBuilder(
@@ -74,8 +74,8 @@ void initCommands(CommandsPlugin commandsPlugin) {
       var embed = EmbedBuilder()
         ..title = "Maid-chan commands"
         ..description =
-            "Use `${Platform.environment['PREFIX']!}help [command name]` for more info about a specific command"
-        ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
+            "Use `${Platform.environment['MAID_CHAN_PREFIX']!}help [command name]` for more info about a specific command"
+        ..color = DiscordColor.parseHexString(Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
         ..fields = [
           for (var category in categories.keys)
             EmbedFieldBuilder(

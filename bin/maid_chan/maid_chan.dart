@@ -7,14 +7,14 @@ import 'commands.dart';
 
 void main() async {
   final commands = CommandsPlugin(
-    prefix: mentionOr((_) => Platform.environment["PREFIX"]!),
+    prefix: mentionOr((_) => Platform.environment["MAID_CHAN_PREFIX"]!),
     guild: null,
     options: CommandsOptions(
       logErrors: true,
     ),
   );
   final client = await Nyxx.connectGateway(
-    Platform.environment['TOKEN']!,
+    Platform.environment['MAID_CHAN_TOKEN']!,
     GatewayIntents.allUnprivileged |
         GatewayIntents.messageContent |
         GatewayIntents.guildMembers,

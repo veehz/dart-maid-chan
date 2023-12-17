@@ -47,7 +47,7 @@ final hug = ExtendedChatCommand(
 
     final embed = EmbedBuilder()
       ..description = desc
-      ..color = DiscordColor.parseHexString(Platform.environment["DEFAULT_COLOUR"]!)
+      ..color = DiscordColor.parseHexString(Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
 
     await context.respond(MessageBuilder(embeds: [embed]));
