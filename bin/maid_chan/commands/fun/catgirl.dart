@@ -7,13 +7,13 @@ import '../command.dart';
 final catgirl = ExtendedChatCommand(
   'catgirl',
   'Returns a random catgirl. Will only return NSFW catgirls in NSFW channels.',
-  (ChatContext context) async {
+  id('catgirl', (ChatContext context) async {
     final rawUrl =
         'https://nekos.moe/api/v1/random/image?count=1&nsfw=${context.isNsfw ? 'true' : 'false'}';
     final url = Uri.parse(rawUrl);
     // send a message first to let the user know we're working on it
-    var message = await context.respond(MessageBuilder(
-        content: 'Fetching catgirl...', replyId: context.message.id));
+    var message =
+        await context.respond(MessageBuilder(content: 'Fetching catgirl...'));
     final response = await http.get(url, headers: {
       'User-Agent': 'maid-chan/0.1.0',
     });
@@ -25,10 +25,11 @@ final catgirl = ExtendedChatCommand(
     final imageUrl = Uri.parse(
         'https://nekos.moe/image/${jsonDecode(response.body)['images'][0]['id']}');
     final embed = EmbedBuilder()
-      ..color = DiscordColor.parseHexString(Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
+      ..color = DiscordColor.parseHexString(
+          Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
     await message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
-  },
+  }),
   usage: 'catgirl',
   category: Category.fun,
 );

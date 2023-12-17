@@ -8,7 +8,8 @@ import 'commands.dart';
 void main() async {
   final commands = CommandsPlugin(
     prefix: mentionOr((_) => Platform.environment["MAID_CHAN_PREFIX"]!),
-    guild: null,
+    // Testing Guild: Maid-chan Server (invite: P23fQ6A)
+    guild: Snowflake(720079670325936149),
     options: CommandsOptions(
       logErrors: true,
     ),

@@ -10,7 +10,7 @@ extension Helper on ChatContext {
       : channel is GuildChannel
           ? (channel as GuildChannel).isNsfw
           : false;
-  get message => (this as MessageChatContext).message;
+  get message => this is MessageChatContext ? (this as MessageChatContext).message : null;
 
   /// Returns true if the channel is not nsfw.
   bool notNsfw() {

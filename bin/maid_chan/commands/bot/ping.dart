@@ -4,7 +4,7 @@ import '../command.dart';
 final ping = ExtendedChatCommand(
   'ping',
   'Pings the bot, fetch latency.',
-  (ChatContext context) async {
+  id('ping', (ChatContext context) async {
     final basicLatency = context.client.httpHandler.latency.inMilliseconds;
     final realLatency = context.client.httpHandler.realLatency.inMilliseconds;
     final gatewayLatency = context.client.gateway.latency.inMilliseconds;
@@ -14,7 +14,7 @@ final ping = ExtendedChatCommand(
           'Real latency: $realLatency ms\n'
           'Gateway latency: $gatewayLatency ms',
     ));
-  },
+  }),
   aliases: ['p'],
   usage: 'ping',
   category: Category.bot,

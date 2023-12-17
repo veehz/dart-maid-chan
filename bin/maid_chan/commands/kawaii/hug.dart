@@ -7,7 +7,7 @@ import '../command.dart';
 final hug = ExtendedChatCommand(
   'hug',
   'Hug someone.',
-  (ChatContext context) async {
+  id('hug', (ChatContext context) async {
     final url = Uri.parse("https://nekos.life/api/v2/img/hug");
     final response = await http.get(url, headers: {
       'User-Agent': 'maid-chan/0.0.1',
@@ -51,7 +51,7 @@ final hug = ExtendedChatCommand(
       ..image = EmbedImageBuilder(url: imageUrl);
 
     await context.respond(MessageBuilder(embeds: [embed]));
-  },
+  }),
   usage: 'hug',
   category: Category.kawaii,
 );
