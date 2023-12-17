@@ -1,2 +1,3 @@
 .env
 .dart_tool/
+bin/out.g.dart
