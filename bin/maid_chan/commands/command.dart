@@ -13,6 +13,14 @@ extension Helper on ChatContext {
           : false;
   get message =>
       this is MessageChatContext ? (this as MessageChatContext).message : null;
+  Snowflake? get authorId => this is MessageChatContext
+      ? (this as MessageChatContext).message.author.id
+      : this is InteractionChatContext
+          ? (this as InteractionChatContext).member!.id
+          : null;
+
+  // Support for text commands.
+  List<User> get mentions => message?.mentions ?? [];
 
   /// Returns true if the channel is not nsfw.
   bool notNsfw() {

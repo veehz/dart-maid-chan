@@ -9,6 +9,11 @@ set -a
 source .env
 set +a
 
+# if exists bin/out.g.dart delete
+if [ -f bin/out.g.dart ]; then
+    rm bin/out.g.dart
+fi
+
 # dart run
 
 dart run nyxx_commands:compile bin/bots.dart -o bin/out.g.dart --no-compile

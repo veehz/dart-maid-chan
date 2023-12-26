@@ -3,13 +3,13 @@ import 'dart:io';
 import '../command.dart';
 import '../../../api/nekoslife.dart';
 
-final hug = ExtendedChatCommand(
-  'hug',
-  'Hug someone.',
-  usage: 'hug',
+final kiss = ExtendedChatCommand(
+  'kiss',
+  'Kiss someone.',
+  usage: 'kiss',
   category: Category.kawaii,
-  id('hug', (ChatContext context, [Member? target]) async {
-    final imageUrl = await image('hug');
+  id('kiss', (ChatContext context, [Member? target]) async {
+    final imageUrl = await image('kiss');
 
     if (imageUrl == null) {
       await context.respond(MessageBuilder(content: 'Failed to fetch image.'));
@@ -32,20 +32,20 @@ final hug = ExtendedChatCommand(
     String desc = "Placeholder. Should not be seen.";
     if (mentions.isEmpty) {
       // No one.
-      desc = "Aww... no one to hug? Here, have a hug from me, <@$author>!";
+      desc = "Aww... no one to kiss? Here, have a kiss from me, <@$author>!";
     } else if (mentions.length == 1 && mentions[0] == context.client.user.id) {
       // Only the bot.
-      desc = "Aww... you want to hug me? Here, have a hug from me, <@$author>!";
+      desc = "Aww... you want to kiss me? Here, have a kiss from me, <@$author>!";
     } else if (mentions.length == 1) {
       // Someone else.
-      desc = "<@$author> hugs <@${mentions[0]}>!";
+      desc = "<@$author> kisses <@${mentions[0]}>!";
     } else if (mentions.contains(context.client.user.id)) {
       // The bot and someone else.
       mentions.remove(context.client.user.id);
-      desc = "<@$author> hugs <@${mentions.join(">, <@")}> and me!";
+      desc = "<@$author> kisses <@${mentions.join(">, <@")}> and me!";
     } else {
       // Multiple people.
-      desc = "<@$author> hugs <@${mentions.join(">, <@")}>!";
+      desc = "<@$author> kisses <@${mentions.join(">, <@")}>!";
     }
 
     await context.respond(MessageBuilder(embeds: [
