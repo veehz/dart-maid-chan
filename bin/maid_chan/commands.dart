@@ -5,6 +5,8 @@ import 'commands/command.dart';
 // Import commands
 // Bot
 import 'commands/bot/ping.dart' as cmd;
+import 'commands/bot/stats.dart' as cmd;
+import 'commands/bot/top.dart' as cmd;
 // Fun
 import 'commands/fun/catgirl.dart' as cmd;
 // Kawaii
@@ -14,15 +16,19 @@ import 'commands/kawaii/kiss.dart' as cmd;
 import 'commands/moderation/nick.dart' as cmd;
 // Utility
 import 'commands/utility/avatar.dart' as cmd;
+import 'commands/utility/urban.dart' as cmd;
 
 Set<ExtendedChatCommand> commandSet = {
   cmd.ping,
+  cmd.stats,
+  cmd.top,
   cmd.catgirl,
   cmd.catgirlnsfw,
   cmd.hug,
   cmd.kiss,
   cmd.nick,
   cmd.avatar,
+  cmd.urban,
 };
 
 // Do not need to adjust below when adding commands

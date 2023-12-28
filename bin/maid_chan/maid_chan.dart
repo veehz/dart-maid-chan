@@ -5,6 +5,7 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 
 import 'commands.dart';
 import 'checks.dart' as predefined_checks;
+import 'commands/bot/stats.dart' as stats; // Fetch stats
 
 void main() async {
   final commands = CommandsPlugin(
@@ -24,8 +25,16 @@ void main() async {
     options: GatewayClientOptions(plugins: [logging, cliIntegration, commands]),
   );
 
-  client.onReady.listen((ReadyEvent event) {
+  client.onReady.listen((ReadyEvent event) async {
     print('Ready!');
+    await stats.fetchStats(client);
+    print("I am in ${stats.guilds.length} guilds.");
+  });
+
+  commands.onPreCall.listen((CommandContext context) {
+    stats.commandsUsed++;
+    stats.commandUsage
+        .update(context.command.name, (value) => value + 1, ifAbsent: () => 1);
   });
 
   commands.onCommandError.listen((CommandsException exception) {
