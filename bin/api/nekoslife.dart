@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 const _api = 'https://nekos.life/api/v2/';
-_getResponse(String endpoint) async {
+Future _getResponse(String endpoint) async {
   final url = Uri.parse(_api + endpoint);
   final response = await http.get(url, headers: {
     'User-Agent': 'maid-chan/0.1.0',

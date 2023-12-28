@@ -15,14 +15,31 @@ include: package:lints/recommended.yaml
 
 # Uncomment the following section to specify additional rules.
 
-# linter:
-#   rules:
-#     - camel_case_types
+linter:
+  rules:
+    - avoid_slow_async_io
+    - avoid_type_to_string
+    - invalid_case_patterns
+    - unnecessary_statements
+    - unsafe_html
+    - always_declare_return_types
+    - avoid_annotating_with_dynamic
+    - eol_at_end_of_file
+    - join_return_with_assignment
+    - library_annotations
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    # - prefer_single_quotes
+    - unnecessary_library_directive
+    - unnecessary_null_checks
+    - unreachable_from_main
+    - sort_pub_dependencies
 
 analyzer:
   exclude:
     - "**/*.g.dart"
-
 # For more information about the core and recommended set of lints, see
 # https://dart.dev/go/core-lints
 

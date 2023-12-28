@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 
 import '../command.dart';
 
-final String _urbanDefine = 'https://api.urbandictionary.com/v0/define?term=';
-final String _urbanRandom = 'https://api.urbandictionary.com/v0/random';
+const String _urbanDefine = 'https://api.urbandictionary.com/v0/define?term=';
+const String _urbanRandom = 'https://api.urbandictionary.com/v0/random';
 
 final urban = ExtendedChatCommand(
   'urban',

@@ -13,7 +13,8 @@ enum AnilistType {
   MANGA,
 }
 
-search(String search, {bool? isNsfw, AnilistType? type}) async {
+Future<(dynamic, http.Response)> search(String search,
+    {bool? isNsfw, AnilistType? type}) async {
   var query = '''query (\$search: String) {
   Media(
     search: \$search
@@ -58,7 +59,7 @@ search(String search, {bool? isNsfw, AnilistType? type}) async {
   );
 
   if (response.statusCode != 200 || response.body.contains('errors')) {
-    if(response.statusCode != 200) {
+    if (response.statusCode != 200) {
       print(response);
       print(response.body);
     }
@@ -69,7 +70,7 @@ search(String search, {bool? isNsfw, AnilistType? type}) async {
   return (data, response);
 }
 
-anilistUnescapeHtml(String html) {
+String anilistUnescapeHtml(String html) {
   return html
       .replaceAll('<i>', '_')
       .replaceAll('</i>', '_')

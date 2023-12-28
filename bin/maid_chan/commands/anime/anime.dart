@@ -21,15 +21,14 @@ final anime = ExtendedChatCommand(
         type: anilist.AnilistType.ANIME, isNsfw: context.isNsfw);
     if (data == null) {
       if (response.statusCode != 200) {
-        await context.respond(MessageBuilder(
-            content:
-                'AniList API returned status code ${response.statusCode}'));
-      } else if (response.body?["error"] != null) {
-        await context.respond(
-            MessageBuilder(content: response.body["error"]["message"]));
+        if (response.statusCode == 404) {
+          await context.respond(MessageBuilder(content: 'No results found.'));
+        } else {
+          await context
+              .respond(MessageBuilder(content: 'Failed to fetch anime. AniList responded with ${response.statusCode}.'));
+        }
       } else {
-        await context.respond(
-            MessageBuilder(content: 'AniList API returned an unknown error'));
+        await context.respond(MessageBuilder(content: response.body));
       }
       return;
     }

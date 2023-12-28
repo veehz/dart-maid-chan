@@ -11,8 +11,8 @@ void main() async {
   final commands = CommandsPlugin(
     prefix: mentionOr((_) => Platform.environment["MAID_CHAN_PREFIX"]!),
     // Testing Guild: Maid-chan Server (invite: P23fQ6A)
-    guild: Snowflake(720079670325936149),
-    options: CommandsOptions(
+    guild: const Snowflake(720079670325936149),
+    options: const CommandsOptions(
       logErrors: true,
     ),
   );

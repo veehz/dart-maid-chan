@@ -20,7 +20,7 @@ final catgirl = ExtendedChatCommand(
     if (context.isNsfw && _catgirlNsfw.isEmpty) {
       message =
           await context.respond(MessageBuilder(content: 'Fetching catgirl...'));
-      final rawUrl =
+      const rawUrl =
           'https://nekos.moe/api/v1/random/image?count=$_catgirlSyncAmount&nsfw=true';
       final url = Uri.parse(rawUrl);
       final response = await http.get(url, headers: {
@@ -39,7 +39,7 @@ final catgirl = ExtendedChatCommand(
     } else if (!context.isNsfw && _catgirlSfw.isEmpty) {
       message =
           await context.respond(MessageBuilder(content: 'Fetching catgirl...'));
-      final rawUrl =
+      const rawUrl =
           'https://nekos.moe/api/v1/random/image?count=$_catgirlSyncAmount&nsfw=false';
       final url = Uri.parse(rawUrl);
       final response = await http.get(url, headers: {
@@ -84,7 +84,7 @@ final catgirlnsfw = ExtendedChatCommand(
         await context.respond(MessageBuilder(content: 'Fetching catgirl...'));
 
     if (_catgirlNsfw.isEmpty) {
-      final rawUrl =
+      const rawUrl =
           'https://nekos.moe/api/v1/random/image?count=$_catgirlSyncAmount&nsfw=true';
       final url = Uri.parse(rawUrl);
       final response = await http.get(url, headers: {
