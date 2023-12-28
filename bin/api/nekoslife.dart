@@ -1,4 +1,4 @@
-/// Nekos Life API.
+/// Nekos Life API wrapper.
 /// Retrieved from https://nekos.life/api/v2/endpoints
 library;
 

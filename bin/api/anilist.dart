@@ -1,3 +1,7 @@
+/// AniList API Wrapper.
+/// Docs at https://anilist.gitbook.io/anilist-apiv2-docs/
+library;
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -65,7 +69,7 @@ search(String search, {bool? isNsfw, AnilistType? type}) async {
   return (data, response);
 }
 
-simpleUnescapeHtml(String html) {
+anilistUnescapeHtml(String html) {
   return html
       .replaceAll('<i>', '_')
       .replaceAll('</i>', '_')

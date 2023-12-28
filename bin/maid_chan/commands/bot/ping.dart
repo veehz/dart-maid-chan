@@ -1,6 +1,5 @@
 import '../command.dart';
 
-// export an instance of the command, ping.
 final ping = ExtendedChatCommand(
   'ping',
   'Pings the bot, fetch latency.',

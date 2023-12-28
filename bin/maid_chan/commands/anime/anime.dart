@@ -1,6 +1,3 @@
-/// Fetch anime info from AniList
-library;
-
 import '../../../api/anilist.dart' as anilist;
 
 import '../command.dart';
@@ -41,7 +38,7 @@ final anime = ExtendedChatCommand(
       title:
           "${data['title']['english']} ${data['title']['native']} (${data['title']['romaji']})",
       url: Uri.parse(data['siteUrl']),
-      description: anilist.simpleUnescapeHtml(data['description']),
+      description: anilist.anilistUnescapeHtml(data['description']),
       color: DiscordColor.parseHexString(data['coverImage']['color']),
       timestamp: DateTime.now().toUtc(),
       image:
