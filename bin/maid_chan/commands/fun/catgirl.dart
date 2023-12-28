@@ -12,6 +12,7 @@ final catgirl = ExtendedChatCommand(
   'catgirl',
   'Returns a random catgirl. Will only return NSFW catgirls in NSFW channels.',
   usage: 'catgirl',
+  aliases: ['c', 'cg'],
   category: Category.fun,
   id('catgirl', (ChatContext context) async {
     Message? message;

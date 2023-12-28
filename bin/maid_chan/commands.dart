@@ -3,6 +3,8 @@ import 'dart:io';
 import 'commands/command.dart';
 
 // Import commands
+// Anime
+import 'commands/anime/anime.dart' as cmd;
 // Bot
 import 'commands/bot/ping.dart' as cmd;
 import 'commands/bot/stats.dart' as cmd;
@@ -19,6 +21,7 @@ import 'commands/utility/avatar.dart' as cmd;
 import 'commands/utility/urban.dart' as cmd;
 
 Set<ExtendedChatCommand> commandSet = {
+  cmd.anime,
   cmd.ping,
   cmd.stats,
   cmd.top,

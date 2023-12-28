@@ -6,12 +6,12 @@ export 'package:nyxx/nyxx.dart';
 export 'package:nyxx_commands/nyxx_commands.dart';
 
 extension Helper on ChatContext {
-  get isNsfw => channel is Thread
+  bool get isNsfw => channel is Thread
       ? (channel as Thread).isNsfw
       : channel is GuildChannel
           ? (channel as GuildChannel).isNsfw
           : false;
-  get message =>
+  Message? get message =>
       this is MessageChatContext ? (this as MessageChatContext).message : null;
   Snowflake? get authorId => this is MessageChatContext
       ? (this as MessageChatContext).message.author.id
@@ -74,6 +74,7 @@ extension Helper on ChatContext {
 }
 
 enum Category {
+  anime,
   bot,
   fun,
   kawaii,
