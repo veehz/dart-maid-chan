@@ -59,8 +59,7 @@ void initCommands(CommandsPlugin commandsPlugin) {
         await context.respond(MessageBuilder(embeds: [
           EmbedBuilder()
             ..title = cmd.name
-            ..description =
-                cmd.description + (cmd.help != null ? "\n${cmd.help}" : "")
+            ..description = cmd.help ?? cmd.description
             ..color = DiscordColor.parseHexString(
                 Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
             ..timestamp = DateTime.now().toUtc()

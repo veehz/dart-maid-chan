@@ -5,7 +5,6 @@ final nick = ExtendedChatCommand(
   'Change a user\'s nickname',
   dm: false,
   usage: 'nick <user> <new nickname>',
-  help: 'Change a user\'s nickname',
   category: Category.moderation,
   id('nick', (ChatContext context, Member target, String newNick) async {
     if (context.notGuild() || context.notSlash()) return;
@@ -19,6 +18,7 @@ final nick = ExtendedChatCommand(
       context.respond(MessageBuilder(content: "Couldn't change nickname :/"));
       return;
     }
-    context.respond(MessageBuilder(content: 'Successfully changed nickname of $oldNick to $newNick'));
+    context.respond(MessageBuilder(
+        content: 'Successfully changed nickname of $oldNick to $newNick'));
   }),
 );

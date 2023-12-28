@@ -93,7 +93,7 @@ class ExtendedChatCommand extends ChatCommand {
   /// Usage
   String? usage;
 
-  /// Extra description, shown in the help menu.
+  /// Help shown in the help menu. If null, description will be used.
   String? help;
 
   /// Indicate if the command can be used in DMs (default: true)
