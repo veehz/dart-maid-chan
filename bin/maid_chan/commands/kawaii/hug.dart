@@ -17,35 +17,16 @@ final hug = ExtendedChatCommand(
     }
 
     Snowflake author = context.authorId!;
-    List<Snowflake> mentions = [];
+    Snowflake? mention = target?.id;
 
-    // Support for text commands.
-    if (context.message != null) {
-      mentions.addAll(context.message.mentions.map((e) => (e.id as Snowflake)));
-    }
-
-    // Support for slash commands.
-    if (target != null && !mentions.contains(target.id)) {
-      mentions.add(target.id);
-    }
-
-    String desc = "Placeholder. Should not be seen.";
-    if (mentions.isEmpty) {
-      // No one.
-      desc = "Aww... no one to hug? Here, have a hug from me, <@$author>!";
-    } else if (mentions.length == 1 && mentions[0] == context.client.user.id) {
-      // Only the bot.
-      desc = "Aww... you want to hug me? Here, have a hug from me, <@$author>!";
-    } else if (mentions.length == 1) {
+    // description, default no mention.
+    String desc = "Aww... no one to hug? Here, have one from me, <@$author>!";
+    if (mention == context.client.user.id) {
+      // Mention the bot.
+      desc = "Aww... you want to hug me? Here, have one from me, <@$author>!";
+    } else if (mention != null) {
       // Someone else.
-      desc = "<@$author> hugs <@${mentions[0]}>!";
-    } else if (mentions.contains(context.client.user.id)) {
-      // The bot and someone else.
-      mentions.remove(context.client.user.id);
-      desc = "<@$author> hugs <@${mentions.join(">, <@")}> and me!";
-    } else {
-      // Multiple people.
-      desc = "<@$author> hugs <@${mentions.join(">, <@")}>!";
+      desc = "<@$author> hugs <@$mention>!";
     }
 
     await context.respond(MessageBuilder(embeds: [

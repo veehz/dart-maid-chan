@@ -7,11 +7,11 @@ final avatar = ExtendedChatCommand(
   help: 'Get a user\'s avatar',
   category: Category.utility,
   id('avatar', (ChatContext context, [Member? input]) async {
-    CdnAsset avatar =
-        input?.avatar ?? input?.user?.avatar ?? context.user.avatar;
-
-    print(avatar);
-    print(context.message);
+    final CdnAsset avatar = switch (input) {
+      Member(:final avatar?) => avatar,
+      Member(:final id) => (await context.client.users[id].get()).avatar,
+      null => context.user.avatar,
+    };
 
     await context.respond(MessageBuilder(embeds: [
       EmbedBuilder(

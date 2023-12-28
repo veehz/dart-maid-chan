@@ -29,34 +29,31 @@ void main() async {
   });
 
   commands.onCommandError.listen((CommandsException exception) {
-    print(exception);
     if (exception is CheckFailedException) {
       AbstractCheck failed = exception.failed;
       if (failed == predefined_checks.guildOnly) {
         exception.context.respond(MessageBuilder(
             content: "This command can only be used in a guild."));
-        print("Exception handled.");
       } else if (failed == predefined_checks.dmOnly) {
         exception.context.respond(
             MessageBuilder(content: "This command can only be used in a DM."));
-        print("Exception handled.");
       } else if (failed == predefined_checks.disabled) {
         exception.context
             .respond(MessageBuilder(content: "This command is disabled."));
-        print("Exception handled.");
       } else {
-        print("Exception not handled: $exception");
+        print("Exception ${exception.runtimeType} not handled: $exception");
       }
     } else if (exception is InteractionTimeoutException) {
       exception.context
           .respond(MessageBuilder(content: "You took too long to respond!"));
-      print("Exception handled.");
     } else if (exception is NotEnoughArgumentsException) {
       exception.context
           .respond(MessageBuilder(content: "Not enough arguments! "));
-      print("Exception handled.");
+    } else if (exception is ConverterFailedException) {
+      // Most likely because argument is not what is expected.
+      // We assume that it's a normal message wrongly assumed to be a command.
     } else {
-      print("Exception not handled: $exception");
+      print("Exception ${exception.runtimeType} not handled: $exception");
     }
   });
 
