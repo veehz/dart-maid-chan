@@ -8,6 +8,7 @@ import 'commands/anime/anime.dart' as cmd;
 // Bot
 import 'commands/bot/ping.dart' as cmd;
 import 'commands/bot/stats.dart' as cmd;
+import 'commands/bot/switch_case.dart' as cmd;
 import 'commands/bot/top.dart' as cmd;
 // Fun
 import 'commands/fun/catgirl.dart' as cmd;
@@ -21,10 +22,11 @@ import 'commands/utility/avatar.dart' as cmd;
 import 'commands/utility/urban.dart' as cmd;
 import 'commands/utility/translate.dart' as cmd;
 
-Set<ExtendedChatCommand> commandSet = {
+Set<MaidChanCommand> commandSet = {
   cmd.anime,
   cmd.ping,
   cmd.stats,
+  cmd.switchCase,
   cmd.top,
   cmd.catgirl,
   cmd.catgirlnsfw,
@@ -38,9 +40,9 @@ Set<ExtendedChatCommand> commandSet = {
 
 // Do not need to adjust below when adding commands
 
-Map<String, ExtendedChatCommand> commands = {};
+Map<String, MaidChanCommand> commands = {};
 
-Map<String, ExtendedChatCommand> aliases = {};
+Map<String, MaidChanCommand> aliases = {};
 
 void initCommands(CommandsPlugin commandsPlugin) {
   for (var command in commandSet) {
@@ -55,18 +57,39 @@ void initCommands(CommandsPlugin commandsPlugin) {
     usage: "help [optional: cmd name]",
     category: Category.bot,
     id('help', (ChatContext context, [String? command]) async {
+      if (context is MessageChatContext) {
+        command = context.message.content.split(" ").sublist(1).join(" ");
+      }
+
       if (command != null) {
-        final cmd = getCommand(command);
+        final args = command.split(" ");
+        var cmd = getCommand(args[0]);
+        String doYouMean = cmd != null ? cmd.name : "";
+
+        for (int i = 1; i < args.length; i++) {
+          if (cmd is ExtendedChatGroup) {
+            cmd = cmd.children.firstWhere((e) => e.name == args[i])
+                as MaidChanCommand?;
+            if (cmd != null) {
+              doYouMean += " ${cmd.name}";
+            } else {
+              break;
+            }
+          }
+        }
+
         if (cmd == null) {
           await context.respond(MessageBuilder(embeds: [
             EmbedBuilder()
               ..title = "Command not found"
-              ..description = "Command `$command` not found"
+              ..description =
+                  "Command `$command` not found. ${doYouMean.isNotEmpty ? "Did you mean `$doYouMean`?" : ""}}"
               ..color = DiscordColor.parseHexString("FF0000")
               ..timestamp = DateTime.now().toUtc()
           ]));
           return;
         }
+
         await context.respond(MessageBuilder(embeds: [
           EmbedBuilder()
             ..title = cmd.name
@@ -102,6 +125,11 @@ void initCommands(CommandsPlugin commandsPlugin) {
                 EmbedFieldBuilder(
                     name: "Restrictions",
                     value: "Cannot be used",
+                    isInline: false),
+              if (cmd is ExtendedChatGroup)
+                EmbedFieldBuilder(
+                    name: "Subcommands",
+                    value: cmd.children.map((e) => "`${e.name}`").join(", "),
                     isInline: false),
             ]
         ]));
@@ -144,7 +172,7 @@ void initCommands(CommandsPlugin commandsPlugin) {
   }
 }
 
-ExtendedChatCommand? getCommand(command) {
+MaidChanCommand? getCommand(command) {
   if (commands.containsKey(command)) {
     return commands[command];
   } else if (aliases.containsKey(command)) {

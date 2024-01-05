@@ -83,24 +83,50 @@ enum Category {
   miscellaneous,
 }
 
-/// Class Command
-class ExtendedChatCommand extends ChatCommand {
+mixin MaidChanCommand on ChatCommandComponent {
   /// Category of the command
+  Category get category;
+
+  /// If the command is nsfw
+  bool get nsfw;
+
+  /// Usage
+  String? get usage;
+
+  /// Help shown in the help menu. If null, description will be used.
+  String? get help;
+
+  /// Indicate if the command can be used in DMs (default: true)
+  bool get dm;
+
+  /// Indicate if the command can be used in guilds (default: true)
+  bool get guild;
+}
+
+/// Class Command
+class ExtendedChatCommand extends ChatCommand with MaidChanCommand {
+  /// Category of the command
+  @override
   Category category;
 
   /// If the command is nsfw
+  @override
   bool nsfw;
 
   /// Usage
+  @override
   String? usage;
 
   /// Help shown in the help menu. If null, description will be used.
+  @override
   String? help;
 
   /// Indicate if the command can be used in DMs (default: true)
+  @override
   bool dm = true;
 
   /// Indicate if the command can be used in guilds (default: true)
+  @override
   bool guild = true;
 
   // We do not understand how ChatCommand works internally, so do not use super parameters.
@@ -132,6 +158,62 @@ class ExtendedChatCommand extends ChatCommand {
               ...checks
             ],
             singleChecks: singleChecks,
+            options: options,
+            localizedNames: localizedNames,
+            localizedDescriptions: localizedDescriptions);
+}
+
+class ExtendedChatGroup extends ChatGroup with MaidChanCommand {
+  /// Category of the command
+  @override
+  Category category;
+
+  /// If the command is nsfw
+  @override
+  bool nsfw;
+
+  /// Usage
+  @override
+  String? usage;
+
+  /// Help shown in the help menu. If null, description will be used.
+  @override
+  String? help;
+
+  /// Indicate if the command can be used in DMs (default: true)
+  @override
+  bool dm = true;
+
+  /// Indicate if the command can be used in guilds (default: true)
+  @override
+  bool guild = true;
+
+  // We do not understand how ChatGroup works internally, so do not use super parameters.
+  // ignore: use_super_parameters
+  ExtendedChatGroup(
+    String name,
+    String description, {
+    List<String> aliases = const [],
+    Iterable<ChatCommandComponent> children = const [],
+    Iterable<AbstractCheck> checks = const [],
+    CommandOptions options = const CommandOptions(),
+    Map<Locale, String>? localizedNames,
+    Map<Locale, String>? localizedDescriptions,
+    this.category = Category.miscellaneous,
+    this.nsfw = false,
+    this.usage,
+    this.help,
+    this.dm = true,
+    this.guild = true,
+  }) : super(name, description,
+            aliases: aliases,
+            children: children,
+            checks: [
+              if (!dm && guild) predefined_checks.guildOnly,
+              if (!guild && dm) predefined_checks.dmOnly,
+              if (!guild && !dm) predefined_checks.disabled,
+              ...checks
+            ],
             options: options,
             localizedNames: localizedNames,
             localizedDescriptions: localizedDescriptions);
