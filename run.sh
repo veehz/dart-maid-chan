@@ -17,4 +17,11 @@ fi
 # dart run
 
 dart run nyxx_commands:compile bin/bots.dart -o bin/out.g.dart --no-compile
-dart run bin/out.g.dart
+# if exit code is 0, run
+if [ $? -eq 0 ]; then
+    echo "Compilation successful"
+    dart run bin/out.g.dart
+else
+    echo "Compilation failed"
+    exit 1
+fi

@@ -19,6 +19,7 @@ import 'commands/kawaii/kiss.dart' as cmd;
 import 'commands/moderation/nick.dart' as cmd;
 // Utility
 import 'commands/utility/avatar.dart' as cmd;
+import 'commands/utility/rss.dart' as cmd;
 import 'commands/utility/urban.dart' as cmd;
 import 'commands/utility/translate.dart' as cmd;
 
@@ -34,6 +35,7 @@ Set<MaidChanCommand> commandSet = {
   cmd.kiss,
   cmd.nick,
   cmd.avatar,
+  cmd.rss,
   cmd.urban,
   if (Platform.environment["DEEPL_API_KEY"] != null) cmd.translate,
 };
