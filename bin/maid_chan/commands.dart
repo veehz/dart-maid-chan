@@ -19,6 +19,7 @@ import 'commands/moderation/nick.dart' as cmd;
 // Utility
 import 'commands/utility/avatar.dart' as cmd;
 import 'commands/utility/urban.dart' as cmd;
+import 'commands/utility/translate.dart' as cmd;
 
 Set<ExtendedChatCommand> commandSet = {
   cmd.anime,
@@ -32,6 +33,7 @@ Set<ExtendedChatCommand> commandSet = {
   cmd.nick,
   cmd.avatar,
   cmd.urban,
+  if (Platform.environment["DEEPL_API_KEY"] != null) cmd.translate,
 };
 
 // Do not need to adjust below when adding commands

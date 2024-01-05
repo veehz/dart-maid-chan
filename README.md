@@ -1,7 +1,11 @@
-# Dart bots
+# Maid Chan
 
-A dart app running different bots.
+Maid-chan is a Discord bot with multiple features.
 
-## Bots:
-
-- Maid-chan (Discord)
+## Features
+- Bot stats
+- Basic commands such as nick, avatar, etc.
+- Translation by [DeepL](https://www.deepl.com/)
+- Fetch catgirl ([Nekos.moe](https://nekos.moe/))
+- More interactions with other server members (hug/kiss etc.) ([Nekos!](https://nekos.life/))
+- [Urban Dictionary](https://urbandictionary.com/) definitions
