@@ -1,20 +1,15 @@
 name: bots
 description: Bots in Dart.
 version: 0.1.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/veehz/dart-maid-chan
 
 environment:
   sdk: ^3.2.3
 
-# Add regular dependencies here.
 dependencies:
   http: ^1.1.2
   nyxx: ^6.1.0
   nyxx_commands: ^6.0.2
-  # path: ^1.8.0
 
 dev_dependencies:
   lints: ^3.0.0
-
-assets:
-  - .env

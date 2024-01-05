@@ -5,6 +5,8 @@ library;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'config.dart' show userAgent;
+
 // ignore constant identifier names because we follow Anilist API
 enum AnilistType {
   // ignore: constant_identifier_names
@@ -49,7 +51,10 @@ Future<(dynamic, http.Response)> search(String search,
 
   http.Response response = await http.post(
     Uri.parse('https://graphql.anilist.co'),
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': userAgent,
+    },
     body: jsonEncode({
       'query': query,
       'variables': {

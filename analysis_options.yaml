@@ -40,6 +40,7 @@ linter:
 analyzer:
   exclude:
     - "**/*.g.dart"
+    - "try/**"
 # For more information about the core and recommended set of lints, see
 # https://dart.dev/go/core-lints
 
