@@ -12,28 +12,26 @@ final switchCase = ExtendedChatGroup(
           'upper',
           'Switch everything to upper case',
           usage: 'switchcase upper <text>',
-          id('upper', (ChatContext context, String text) async {
+          id('upper', (ChatContext context, String text) {
             String actualText = text;
             if (context is MessageChatContext) {
               actualText =
                   context.message.content.split(' ').sublist(2).join(' ');
             }
 
-            await context
-                .respond(MessageBuilder(content: actualText.toUpperCase()));
+            context.respond(MessageBuilder(content: actualText.toUpperCase()));
           })),
       ExtendedChatCommand(
           'lower',
           'Switch everything to lower case',
           usage: 'switchcase lower <text>',
-          id('lower', (ChatContext context, String text) async {
+          id('lower', (ChatContext context, String text) {
             String actualText = text;
             if (context is MessageChatContext) {
               actualText =
                   context.message.content.split(' ').sublist(2).join(' ');
             }
 
-            await context
-                .respond(MessageBuilder(content: actualText.toLowerCase()));
+            context.respond(MessageBuilder(content: actualText.toLowerCase()));
           })),
     ]);

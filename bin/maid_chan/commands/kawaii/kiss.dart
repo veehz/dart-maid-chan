@@ -12,7 +12,7 @@ final kiss = ExtendedChatCommand(
     final imageUrl = await image('kiss');
 
     if (imageUrl == null) {
-      await context.respond(MessageBuilder(content: 'Failed to fetch image.'));
+      context.respond(MessageBuilder(content: 'Failed to fetch image.'));
       return;
     }
 
@@ -29,7 +29,7 @@ final kiss = ExtendedChatCommand(
       desc = "<@$author> kisses <@$mention>!";
     }
 
-    await context.respond(MessageBuilder(embeds: [
+    context.respond(MessageBuilder(embeds: [
       EmbedBuilder(
         description: desc,
         color: DiscordColor.parseHexString(

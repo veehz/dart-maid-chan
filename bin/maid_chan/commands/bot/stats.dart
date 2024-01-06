@@ -17,8 +17,8 @@ final stats = ExtendedChatCommand(
   'Get the stats of the bot',
   category: Category.bot,
   usage: 'stats',
-  id('stats', (ChatContext context) async {
-    await context.respond(MessageBuilder(embeds: [
+  id('stats', (ChatContext context) {
+    context.respond(MessageBuilder(embeds: [
       EmbedBuilder(
         title: "Maid-chan stats",
         fields: [

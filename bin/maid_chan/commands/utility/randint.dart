@@ -6,14 +6,13 @@ final randint = ExtendedChatCommand(
   usage: 'randint [min=1] [max=6]',
   category: Category.utility,
   aliases: ['dice', 'roll'],
-  id('randint', (ChatContext context, [int min = 1, int max = 6]) async {
+  id('randint', (ChatContext context, [int min = 1, int max = 6]) {
     if (min > max) {
-      await context
-          .respond(MessageBuilder(content: 'min must be less than max'));
+      context.respond(MessageBuilder(content: 'min must be less than max'));
       return;
     }
 
     final number = rng.nextInt(max - min) + min;
-    await context.respond(MessageBuilder(content: number.toString()));
+    context.respond(MessageBuilder(content: number.toString()));
   }),
 );

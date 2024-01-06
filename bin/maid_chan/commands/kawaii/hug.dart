@@ -12,7 +12,7 @@ final hug = ExtendedChatCommand(
     final imageUrl = await image('hug');
 
     if (imageUrl == null) {
-      await context.respond(MessageBuilder(content: 'Failed to fetch image.'));
+      context.respond(MessageBuilder(content: 'Failed to fetch image.'));
       return;
     }
 
@@ -29,7 +29,7 @@ final hug = ExtendedChatCommand(
       desc = "<@$author> hugs <@$mention>!";
     }
 
-    await context.respond(MessageBuilder(embeds: [
+    context.respond(MessageBuilder(embeds: [
       EmbedBuilder(
         description: desc,
         color: DiscordColor.parseHexString(

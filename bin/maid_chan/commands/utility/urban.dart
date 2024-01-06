@@ -16,7 +16,7 @@ final urban = ExtendedChatCommand(
   checks: [apiCooldown],
   id('urban', (ChatContext context, [String? input]) async {
     if (!context.isNsfw) {
-      await context.respond(MessageBuilder(
+      context.respond(MessageBuilder(
           content: 'This command can only be used in NSFW channels.'));
       return;
     }
@@ -39,9 +39,9 @@ final urban = ExtendedChatCommand(
     }
 
     if (!foundWord) {
-      await context.respond(MessageBuilder(content: 'Word $input not found.'));
+      context.respond(MessageBuilder(content: 'Word $input not found.'));
     } else {
-      await context.respond(MessageBuilder(embeds: [
+      context.respond(MessageBuilder(embeds: [
         EmbedBuilder(
           title:
               "${input == null ? "Random " : ""}Urban Dictionary definition of ${word['word']}",

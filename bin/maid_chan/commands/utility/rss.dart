@@ -58,7 +58,7 @@ Future<MessageBuilder> _makeRssEmbed(String url) async {
   ]);
 }
 
-executer(String url, ChatContext context) async {
+void executer(String url, ChatContext context) async {
   await context.respond(await _makeRssEmbed(url));
 }
 
@@ -70,14 +70,14 @@ List<MaidChanCommand> _rssFeeds = [
     Cmd(
       "top",
       "Top Stories",
-      id("bbc-top", (ChatContext context) async {
+      id("bbc-top", (ChatContext context) {
         executer("http://feeds.bbci.co.uk/news/rss.xml", context);
       }),
     ),
     Cmd(
       "world",
       "World",
-      id("bbc-world", (ChatContext context) async {
+      id("bbc-world", (ChatContext context) {
         executer("http://feeds.bbci.co.uk/news/world/rss.xml", context);
       }),
     ),
@@ -86,14 +86,14 @@ List<MaidChanCommand> _rssFeeds = [
     Cmd(
         "world",
         "World",
-        id("nytimes-world", (ChatContext context) async {
+        id("nytimes-world", (ChatContext context) {
           executer("https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
               context);
         })),
     Cmd(
         "apac",
         "Asia Pacific",
-        id("nytimes-apac", (ChatContext context) async {
+        id("nytimes-apac", (ChatContext context) {
           executer(
               "https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml",
               context);
@@ -102,7 +102,7 @@ List<MaidChanCommand> _rssFeeds = [
   Cmd(
       "custom",
       "Custom RSS Feed",
-      id("custom", (ChatContext context, String url) async {
+      id("custom", (ChatContext context, String url) {
         executer(url, context);
       })),
 ];

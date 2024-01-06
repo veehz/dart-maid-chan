@@ -7,7 +7,7 @@ final timer = ExtendedChatCommand(
   'Set a timer',
   usage: 'timer <seconds> [message]',
   category: Category.utility,
-  id('timer', (ChatContext context, int seconds, [String? message]) async {
+  id('timer', (ChatContext context, int seconds, [String? message]) {
     if (context is MessageChatContext) {
       // get full message
       message = context.message.content.split(' ').sublist(2).join(' ');

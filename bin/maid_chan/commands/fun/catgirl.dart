@@ -46,7 +46,7 @@ final catgirl = ExtendedChatCommand(
         'User-Agent': 'maid-chan/0.1.0',
       });
       if (response.statusCode != 200) {
-        await message
+        message
             .edit(MessageUpdateBuilder(content: 'Failed to fetch catgirls.'));
         return;
       }
@@ -66,9 +66,9 @@ final catgirl = ExtendedChatCommand(
       ..image = EmbedImageBuilder(url: imageUrl);
 
     if (message != null) {
-      await message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
+      message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
     } else {
-      await context.respond(MessageBuilder(embeds: [embed]));
+      context.respond(MessageBuilder(embeds: [embed]));
     }
   }),
 );
@@ -91,7 +91,7 @@ final catgirlnsfw = ExtendedChatCommand(
         'User-Agent': 'maid-chan/0.1.0',
       });
       if (response.statusCode != 200) {
-        await message
+        message
             .edit(MessageUpdateBuilder(content: 'Failed to fetch catgirls.'));
         return;
       }
@@ -108,6 +108,6 @@ final catgirlnsfw = ExtendedChatCommand(
       ..color = DiscordColor.parseHexString(
           Platform.environment["MAID_CHAN_DEFAULT_COLOUR"]!)
       ..image = EmbedImageBuilder(url: imageUrl);
-    await message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
+    message.edit(MessageUpdateBuilder(content: '', embeds: [embed]));
   }),
 );

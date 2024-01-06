@@ -8,12 +8,12 @@ final top = ExtendedChatCommand(
   'Get the top commands used (since last restart)',
   category: Category.bot,
   usage: 'top [optional: number of commands]',
-  id('top', (ChatContext context, [int? number]) async {
+  id('top', (ChatContext context, [int? number]) {
     number = number ?? commandsListed;
     final sorted = commandUsage.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
     final top = sorted.take(commandsListed);
-    await context.respond(MessageBuilder(embeds: [
+    context.respond(MessageBuilder(embeds: [
       EmbedBuilder(
         title: "Top $commandsListed commands",
         fields: [

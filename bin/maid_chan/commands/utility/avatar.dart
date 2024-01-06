@@ -12,7 +12,7 @@ final avatar = ExtendedChatCommand(
       null => context.user.avatar,
     };
 
-    await context.respond(MessageBuilder(embeds: [
+    context.respond(MessageBuilder(embeds: [
       EmbedBuilder(
         image: EmbedImageBuilder(url: avatar.url),
       )
