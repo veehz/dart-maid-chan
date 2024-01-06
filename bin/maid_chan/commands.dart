@@ -13,8 +13,12 @@ import 'commands/bot/top.dart' as cmd;
 // Fun
 import 'commands/fun/catgirl.dart' as cmd;
 // Kawaii
+import 'commands/kawaii/cuddle.dart' as cmd;
 import 'commands/kawaii/hug.dart' as cmd;
 import 'commands/kawaii/kiss.dart' as cmd;
+import 'commands/kawaii/pat.dart' as cmd;
+import 'commands/kawaii/slap.dart' as cmd;
+import 'commands/kawaii/tickle.dart' as cmd;
 // Moderation
 import 'commands/moderation/nick.dart' as cmd;
 // Utility
@@ -34,8 +38,12 @@ Set<MaidChanCommand> commandSet = {
   cmd.top,
   cmd.catgirl,
   cmd.catgirlnsfw,
+  cmd.cuddle,
   cmd.hug,
   cmd.kiss,
+  cmd.pat,
+  cmd.slap,
+  cmd.tickle,
   cmd.nick,
   cmd.avatar,
   cmd.randint,
