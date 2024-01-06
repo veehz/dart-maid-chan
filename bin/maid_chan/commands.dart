@@ -19,9 +19,12 @@ import 'commands/kawaii/kiss.dart' as cmd;
 import 'commands/moderation/nick.dart' as cmd;
 // Utility
 import 'commands/utility/avatar.dart' as cmd;
+import 'commands/utility/randint.dart' as cmd;
 import 'commands/utility/rss.dart' as cmd;
-import 'commands/utility/urban.dart' as cmd;
+import 'commands/utility/timer.dart' as cmd;
 import 'commands/utility/translate.dart' as cmd;
+import 'commands/utility/urban.dart' as cmd;
+import 'commands/utility/youtube.dart' as cmd;
 
 Set<MaidChanCommand> commandSet = {
   cmd.anime,
@@ -35,9 +38,12 @@ Set<MaidChanCommand> commandSet = {
   cmd.kiss,
   cmd.nick,
   cmd.avatar,
+  cmd.randint,
   cmd.rss,
-  cmd.urban,
+  cmd.timer,
   if (Platform.environment["DEEPL_API_KEY"] != null) cmd.translate,
+  cmd.urban,
+  if (Platform.environment["GOOGLE_API_KEY"] != null) cmd.youtube,
 };
 
 // Do not need to adjust below when adding commands

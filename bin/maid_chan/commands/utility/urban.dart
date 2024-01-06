@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../checks.dart' show apiCooldown;
 import '../command.dart';
 
 const String _urbanDefine = 'https://api.urbandictionary.com/v0/define?term=';
@@ -12,6 +13,7 @@ final urban = ExtendedChatCommand(
   usage: 'urban [word]',
   nsfw: true,
   category: Category.utility,
+  checks: [apiCooldown],
   id('urban', (ChatContext context, [String? input]) async {
     if (!context.isNsfw) {
       await context.respond(MessageBuilder(

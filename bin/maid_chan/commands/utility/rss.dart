@@ -4,6 +4,8 @@ import '../command.dart';
 import 'package:http/http.dart' as http;
 import 'package:rss_dart/dart_rss.dart';
 
+const _maxPostsInEmbed = 5;
+
 extension RssDiscordTitleMaker on RssItem {
   String get unlinkedTitle {
     final title = this.title ?? "Untitled";
@@ -45,7 +47,7 @@ Future<MessageBuilder> _makeRssEmbed(String url) async {
           ? EmbedThumbnailBuilder(url: Uri.parse(rss.image!.url!))
           : null,
       fields: rss.items
-          .sublist(0, min(rss.items.length, 5))
+          .sublist(0, min(rss.items.length, _maxPostsInEmbed))
           .map((item) => EmbedFieldBuilder(
                 name: item.unlinkedTitle,
                 value: item.linkedDescription,

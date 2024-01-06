@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import '../checks.dart' as predefined_checks;
 
 export 'package:nyxx/nyxx.dart';
 export 'package:nyxx_commands/nyxx_commands.dart';
+
+final rng = Random(DateTime.now().millisecondsSinceEpoch);
 
 extension Helper on ChatContext {
   bool get isNsfw => channel is Thread
