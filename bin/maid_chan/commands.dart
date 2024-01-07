@@ -21,6 +21,7 @@ import 'commands/kawaii/slap.dart' as cmd;
 import 'commands/kawaii/tickle.dart' as cmd;
 // Moderation
 import 'commands/moderation/nick.dart' as cmd;
+import 'commands/moderation/purge.dart' as cmd;
 // Utility
 import 'commands/utility/avatar.dart' as cmd;
 import 'commands/utility/randint.dart' as cmd;
@@ -45,6 +46,7 @@ Set<MaidChanCommand> commandSet = {
   cmd.slap,
   cmd.tickle,
   cmd.nick,
+  cmd.purge,
   cmd.avatar,
   cmd.randint,
   cmd.rss,

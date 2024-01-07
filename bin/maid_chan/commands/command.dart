@@ -1,13 +1,18 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import '../checks.dart' as predefined_checks;
+import 'components/checks.dart' as predefined_checks;
 
 export 'package:nyxx/nyxx.dart';
 export 'package:nyxx_commands/nyxx_commands.dart';
 
 final rng = Random(DateTime.now().millisecondsSinceEpoch);
+
+final defaultTimeout = Duration(
+    seconds:
+        int.parse(Platform.environment["DEFAULT_TIMEOUT_SECONDS"] ?? "999"));
 
 extension Helper on ChatContext {
   bool get isNsfw => channel is Thread
@@ -22,6 +27,7 @@ extension Helper on ChatContext {
       : this is InteractionChatContext
           ? (this as InteractionChatContext).member!.id
           : null;
+  Future<User> get author => client.users[authorId!].get();
 
   // Support for text commands.
   List<User> get mentions => message?.mentions ?? [];

@@ -4,7 +4,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
 import 'commands.dart';
-import 'checks.dart' as predefined_checks;
+import 'commands/components/checks.dart' as predefined_checks;
 import 'commands/bot/stats.dart' as stats; // Fetch stats
 
 void main() async {
@@ -52,15 +52,9 @@ void main() async {
       } else {
         print("Exception ${exception.runtimeType} not handled: $exception");
       }
-    } else if (exception is InteractionTimeoutException) {
-      exception.context
-          .respond(MessageBuilder(content: "You took too long to respond!"));
     } else if (exception is NotEnoughArgumentsException) {
       exception.context
           .respond(MessageBuilder(content: "Not enough arguments! "));
-    } else if (exception is ConverterFailedException) {
-      // Most likely because argument is not what is expected.
-      // We assume that it's a normal message wrongly assumed to be a command.
     } else {
       print("Exception ${exception.runtimeType} not handled: $exception");
     }

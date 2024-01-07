@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../../checks.dart' show apiCooldown;
+import '../components/checks.dart' show apiCooldown;
 import '../command.dart';
 
 const String _urbanDefine = 'https://api.urbandictionary.com/v0/define?term=';

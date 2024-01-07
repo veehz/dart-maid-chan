@@ -1,7 +1,7 @@
 import '../command.dart';
 
 import '../../../api/deepl.dart';
-import '../../checks.dart' show apiCooldown;
+import '../components/checks.dart' show apiCooldown;
 
 final translate = ExtendedChatCommand(
   'translate',
