@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../command.dart';
+import '../components/levels.dart';
 
 final youtube = ExtendedChatCommand(
   'youtube',
@@ -57,42 +58,47 @@ final youtube = ExtendedChatCommand(
         return;
       }
 
-      final message = context.respond(MessageBuilder(embeds: [
-        EmbedBuilder(
-          title: "Youtube Search Results for \"$query\" (Page $pageNumber)",
-          url: Uri.parse("https://www.youtube.com/results?search_query=$query"),
-          color: DiscordColor.parseHexString("FF0000"),
-          timestamp: DateTime.now().toUtc(),
-          thumbnail: EmbedThumbnailBuilder(
-            url: Uri.parse(items.first["snippet"]["thumbnails"]["high"]["url"]),
-          ),
-          fields: items
-              .map((e) => EmbedFieldBuilder(
-                    name: e["snippet"]["title"],
-                    value:
-                        "[link](https://www.youtube.com/watch?v=${e["id"]["videoId"]}) - ${e["snippet"]["description"] ?? "No description"}}",
-                    isInline: false,
-                  ))
-              .toList(growable: false),
-        )
-      ], components: [
-        ActionRowBuilder(
-          components: [
-            if (prevPageToken != null)
-              ButtonBuilder(
-                label: "Previous Page",
-                style: ButtonStyle.primary,
-                customId: prevId.toString(),
-              ),
-            if (nextPageToken != null)
-              ButtonBuilder(
-                label: "Next Page",
-                style: ButtonStyle.primary,
-                customId: nextId.toString(),
-              ),
-          ],
-        )
-      ]));
+      final message = context.respond(
+        MessageBuilder(embeds: [
+          EmbedBuilder(
+            title: "Youtube Search Results for \"$query\" (Page $pageNumber)",
+            url: Uri.parse(
+                "https://www.youtube.com/results?search_query=$query"),
+            color: DiscordColor.parseHexString("FF0000"),
+            timestamp: DateTime.now().toUtc(),
+            thumbnail: EmbedThumbnailBuilder(
+              url: Uri.parse(
+                  items.first["snippet"]["thumbnails"]["high"]["url"]),
+            ),
+            fields: items
+                .map((e) => EmbedFieldBuilder(
+                      name: e["snippet"]["title"],
+                      value:
+                          "[link](https://www.youtube.com/watch?v=${e["id"]["videoId"]}) - ${e["snippet"]["description"] ?? "No description"}}",
+                      isInline: false,
+                    ))
+                .toList(growable: false),
+          )
+        ], components: [
+          ActionRowBuilder(
+            components: [
+              if (prevPageToken != null)
+                ButtonBuilder(
+                  label: "Previous Page",
+                  style: ButtonStyle.primary,
+                  customId: prevId.toString(),
+                ),
+              if (nextPageToken != null)
+                ButtonBuilder(
+                  label: "Next Page",
+                  style: ButtonStyle.primary,
+                  customId: nextId.toString(),
+                ),
+            ],
+          )
+        ]),
+        level: replaceMessage,
+      );
 
       try {
         final event = await context.getButtonPress(await message);
