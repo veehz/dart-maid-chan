@@ -16,46 +16,96 @@ final youtube = ExtendedChatCommand(
       query = context.message.content.split(' ').sublist(1).join(' ');
     }
 
-    Uri uri = Uri.parse("https://www.googleapis.com/youtube/v3/search");
-    uri = uri.replace(queryParameters: {
-      "part": "snippet",
-      "q": query,
-      "key": Platform.environment["GOOGLE_API_KEY"],
-      "type": "video",
-    });
+    int pageNumber = 1;
+    String? pageId;
+    while (true) {
+      Uri uri = Uri.parse("https://www.googleapis.com/youtube/v3/search");
+      uri = uri.replace(queryParameters: {
+        "part": "snippet",
+        "q": query,
+        "key": Platform.environment["GOOGLE_API_KEY"],
+        "type": "video",
+      });
 
-    var response = await http.get(uri);
-    if (response.statusCode != 200) {
-      context.respond(MessageBuilder(content: "Error: ${response.statusCode}"));
-      return;
+      if (pageId != null) {
+        uri = uri.replace(queryParameters: {
+          "part": "snippet",
+          "q": query,
+          "key": Platform.environment["GOOGLE_API_KEY"],
+          "type": "video",
+          "pageToken": pageId,
+        });
+      }
+
+      var response = await http.get(uri);
+      if (response.statusCode != 200) {
+        context
+            .respond(MessageBuilder(content: "Error: ${response.statusCode}"));
+        return;
+      }
+
+      Map<String, dynamic> json = jsonDecode(response.body);
+      Iterable<Map> items = json["items"];
+      String? prevPageToken = json["prevPageToken"];
+      String? nextPageToken = json["nextPageToken"];
+
+      ComponentId prevId = ComponentId.generate(expirationTime: defaultTimeout);
+      ComponentId nextId = ComponentId.generate(expirationTime: defaultTimeout);
+
+      if (items.isEmpty) {
+        context.respond(MessageBuilder(content: "No results found."));
+        return;
+      }
+
+      final message = context.respond(MessageBuilder(embeds: [
+        EmbedBuilder(
+          title: "Youtube Search Results for \"$query\" (Page $pageNumber)",
+          url: Uri.parse("https://www.youtube.com/results?search_query=$query"),
+          color: DiscordColor.parseHexString("FF0000"),
+          timestamp: DateTime.now().toUtc(),
+          thumbnail: EmbedThumbnailBuilder(
+            url: Uri.parse(items.first["snippet"]["thumbnails"]["high"]["url"]),
+          ),
+          fields: items
+              .map((e) => EmbedFieldBuilder(
+                    name: e["snippet"]["title"],
+                    value:
+                        "[link](https://www.youtube.com/watch?v=${e["id"]["videoId"]}) - ${e["snippet"]["description"] ?? "No description"}}",
+                    isInline: false,
+                  ))
+              .toList(growable: false),
+        )
+      ], components: [
+        ActionRowBuilder(
+          components: [
+            if (prevPageToken != null)
+              ButtonBuilder(
+                label: "Previous Page",
+                style: ButtonStyle.primary,
+                customId: prevId.toString(),
+              ),
+            if (nextPageToken != null)
+              ButtonBuilder(
+                label: "Next Page",
+                style: ButtonStyle.primary,
+                customId: nextId.toString(),
+              ),
+          ],
+        )
+      ]));
+
+      try {
+        final event = await context.getButtonPress(await message);
+        if (event.componentId == prevId.toString()) {
+          pageNumber--;
+          pageId = prevPageToken;
+        } else if (event.componentId == nextId.toString()) {
+          pageNumber++;
+          pageId = nextPageToken;
+        }
+      } on InteractionTimeoutException {
+        return;
+      }
     }
-
-    var json = jsonDecode(response.body);
-    var items = json["items"];
-
-    if (items.isEmpty) {
-      context.respond(MessageBuilder(content: "No results found."));
-      return;
-    }
-
-    context.respond(MessageBuilder(embeds: [
-      EmbedBuilder(
-        title: "Youtube Search Results for \"$query\"",
-        url: Uri.parse("https://www.youtube.com/results?search_query=$query"),
-        color: DiscordColor.parseHexString("FF0000"),
-        timestamp: DateTime.now().toUtc(),
-        thumbnail: EmbedThumbnailBuilder(
-          url: Uri.parse(items.first["snippet"]["thumbnails"]["high"]["url"]),
-        ),
-        fields: (items as Iterable<dynamic>)
-            .map((e) => EmbedFieldBuilder(
-                  name: e["snippet"]["title"],
-                  value:
-                      "[${e["snippet"]["description"] ?? "link"}](https://www.youtube.com/watch?v=${e["id"]["videoId"]})",
-                  isInline: false,
-                ))
-            .toList(growable: false),
-      )
-    ]));
   }),
 );

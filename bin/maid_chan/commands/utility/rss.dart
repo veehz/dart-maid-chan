@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:math';
 
 import '../command.dart';
 import 'package:http/http.dart' as http;
 import 'package:rss_dart/dart_rss.dart';
+
+import '../components/levels.dart';
 
 const _maxPostsInEmbed = 5;
 
@@ -24,42 +27,110 @@ extension RssDiscordTitleMaker on RssItem {
   }
 }
 
-Future<MessageBuilder> _makeRssEmbed(String url) async {
-  // fetch rss
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode != 200) {
-    return MessageBuilder(content: "Error ${response.statusCode}");
+Future<(MessageBuilder, String?, String?, RssFeed?)> _makeRssEmbed(
+    String url, int start,
+    {bool interaction = true, RssFeed? cache}) async {
+  late final RssFeed rss;
+
+  if (cache != null) {
+    rss = cache;
+  } else {
+    // fetch rss
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      return (
+        MessageBuilder(content: "Error ${response.statusCode}"),
+        null,
+        null,
+        null
+      );
+    }
+
+    // parse rss
+    rss = RssFeed.parse(response.body);
   }
 
-  // parse rss
-  final rss = RssFeed.parse(response.body);
+  if (rss.items.length < start) {
+    return (MessageBuilder(content: "No more posts."), null, null, null);
+  }
 
-  return MessageBuilder(embeds: [
-    EmbedBuilder(
-      title: rss.title,
-      description: rss.description,
-      url: rss.link != null ? Uri.tryParse(rss.link!) : null,
-      timestamp: DateTime.now().toUtc(),
-      footer: rss.copyright != null
-          ? EmbedFooterBuilder(text: rss.copyright!)
-          : null,
-      thumbnail: rss.image?.url != null
-          ? EmbedThumbnailBuilder(url: Uri.parse(rss.image!.url!))
-          : null,
-      fields: rss.items
-          .sublist(0, min(rss.items.length, _maxPostsInEmbed))
-          .map((item) => EmbedFieldBuilder(
-                name: item.unlinkedTitle,
-                value: item.linkedDescription,
-                isInline: false,
-              ))
-          .toList(),
-    )
-  ]);
+  String? prevId;
+  String? nextId;
+
+  if (interaction) {
+    prevId = ComponentId.generate(expirationTime: defaultTimeout).toString();
+    nextId = ComponentId.generate(expirationTime: defaultTimeout).toString();
+  }
+
+  return (
+    MessageBuilder(content: "", embeds: [
+      EmbedBuilder(
+        title: rss.title,
+        description:
+            "${rss.description} (Page ${start ~/ _maxPostsInEmbed + 1})",
+        url: rss.link != null ? Uri.tryParse(rss.link!) : null,
+        timestamp: DateTime.now().toUtc(),
+        footer: rss.copyright != null
+            ? EmbedFooterBuilder(text: rss.copyright!)
+            : null,
+        thumbnail: rss.image?.url != null
+            ? EmbedThumbnailBuilder(url: Uri.parse(rss.image!.url!))
+            : null,
+        fields: rss.items
+            .sublist(start, min(rss.items.length, start + _maxPostsInEmbed))
+            .map((item) => EmbedFieldBuilder(
+                  name: item.unlinkedTitle,
+                  value: item.linkedDescription,
+                  isInline: false,
+                ))
+            .toList(),
+      )
+    ], components: [
+      if (interaction)
+        ActionRowBuilder(
+          components: [
+            ButtonBuilder(
+              style: ButtonStyle.primary,
+              label: "Previous",
+              customId: prevId,
+              isDisabled: start == 0,
+            ),
+            ButtonBuilder(
+              style: ButtonStyle.primary,
+              label: "Next",
+              customId: nextId,
+              isDisabled: start + _maxPostsInEmbed >= rss.items.length,
+            ),
+          ],
+        ),
+    ]),
+    prevId,
+    nextId,
+    rss
+  );
 }
 
 void executer(String url, ChatContext context) async {
-  await context.respond(await _makeRssEmbed(url));
+  int start = 0;
+  var (builder, prevId, nextId, cache) = await _makeRssEmbed(url, 0);
+  var message = await context.respond(builder);
+  try {
+    while (true) {
+      var event = await context.getButtonPress(message);
+      if (event.interaction.data.customId == prevId) {
+        start -= _maxPostsInEmbed;
+      } else if (event.interaction.data.customId == nextId) {
+        start += _maxPostsInEmbed;
+      }
+      (builder, prevId, nextId, cache) =
+          await _makeRssEmbed(url, start, cache: cache);
+      message = await context.respond(builder, level: replaceMessage);
+    }
+  } on InteractionTimeoutException {
+    (builder, _, _, _) =
+        await _makeRssEmbed(url, start, interaction: false, cache: cache);
+    context.respond(builder, level: replaceMessage);
+  }
 }
 
 typedef Group = ExtendedChatGroup;
